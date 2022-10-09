@@ -62,7 +62,7 @@ var questionIndex = 0;
 var totalTime = 151;
 function newQuiz() {
     questionIndex = 0;
-    totalTime = 150;
+    totalTime = 30;
     timeLeft.textContent = totalTime;
     initialInput.textContent = "";
 
