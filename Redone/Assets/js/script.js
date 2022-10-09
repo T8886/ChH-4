@@ -24,16 +24,16 @@ var timer = document.getElementById("timer");
 var timeLeft = document.getElementById("timeLeft");
 var timesUp = document.getElementById("timesUp");
 
-var startDiv = document.getElementById("start");
-var startQuizBtn = document.getElementById("start-quiz-button");
+var starting = document.getElementById("start");
+var startBtn = document.getElementById("start-quiz-button");
 
 var questionDiv = document.getElementById("questionDiv");
 var questionTitle = document.getElementById("questionTitle");
-var choiceA = document.getElementById("btn0");
-var choiceB = document.getElementById("btn1");
-var choiceC = document.getElementById("btn2");
-var choiceD = document.getElementById("btn3");
-var answerCheck = document.getElementById("answerCheck");
+var choice_a = document.getElementById("btn0");
+var choice_b = document.getElementById("btn1");
+var choice_c = document.getElementById("btn2");
+var choice_d = document.getElementById("btn3");
+var showAanswer = document.getElementById("showAanswer");
 
 var summary = document.getElementById("summary");
 var submitInitialBtn = document.getElementById("submitInitialBtn");
@@ -54,19 +54,18 @@ var questionNum = 0;
 var scoreResult;
 var questionIndex = 0;
 
-/**
- * FUNCTIONS
- */
+// functions
+
 
 // WHEN I click the start button, timer starts
-var totalTime = 151;
-function newQuiz() {
+var totalTime = 30;
+function Quiz() {
     questionIndex = 0;
     totalTime = 30;
     timeLeft.textContent = totalTime;
     initialInput.textContent = "";
 
-    startDiv.style.display = "none";
+    starting.style.display = "none";
     questionDiv.style.display = "block";
     timer.style.display = "block";
     timesUp.style.display = "none";
@@ -92,10 +91,10 @@ function showQuiz() {
 
 function nextQuestion() {
     questionTitle.textContent = questions[questionIndex].question;
-    choiceA.textContent = questions[questionIndex].choices[0];
-    choiceB.textContent = questions[questionIndex].choices[1];
-    choiceC.textContent = questions[questionIndex].choices[2];
-    choiceD.textContent = questions[questionIndex].choices[3];
+    choice_a.textContent = questions[questionIndex].choices[0];
+    choice_b.textContent = questions[questionIndex].choices[1];
+    choice_c.textContent = questions[questionIndex].choices[2];
+    choice_d.textContent = questions[questionIndex].choices[3];
 }
 
 // validate the answer
@@ -103,18 +102,18 @@ function checkAnswer(answer) {
 
     var lineBreak = document.getElementById("lineBreak");
     lineBreak.style.display = "block";
-    answerCheck.style.display = "block";
+    showAanswer.style.display = "block";
 
     if (questions[questionIndex].answer === questions[questionIndex].choices[answer]) {
         // correct answer, add 1 score to final score
         correctAns++;
         // console.log(correctAns);
-        answerCheck.textContent = "Correct!";
+        showAanswer.textContent = "Correct!";
     } else {
         // wrong answer, deduct 10 second from timer
         totalTime -= 10;
         timeLeft.textContent = totalTime;
-        answerCheck.textContent = "Wrong! The correct answer is: " + questions[questionIndex].answer;
+        showAanswer.textContent = "Wrong! The correct answer is: " + questions[questionIndex].answer;
     }
 
     questionIndex++;
@@ -127,19 +126,19 @@ function checkAnswer(answer) {
     }
 }
 
-function chooseA() { checkAnswer(0); }
+function a() { checkAnswer(0); }
 
-function chooseB() { checkAnswer(1); }
+function b() { checkAnswer(1); }
 
-function chooseC() { checkAnswer(2); }
+function c() { checkAnswer(2); }
 
-function chooseD() { checkAnswer(3); }
+function d() { checkAnswer(3); }
 
 // all questions are answered or timer reaches 0
 function gameCompleted() {
     summary.style.display = "block";
     questionDiv.style.display = "none";
-    startDiv.style.display = "none";
+    starting.style.display = "none";
     timer.style.display = "none";
     timesUp.style.display = "block";
 
@@ -157,7 +156,7 @@ function storeHighScores(event) {
         return;
     } 
 
-    startDiv.style.display = "none";
+    starting.style.display = "none";
     timer.style.display = "none";
     timesUp.style.display = "none";
     summary.style.display = "none";
@@ -193,7 +192,7 @@ function storeHighScores(event) {
 var i = 0;
 function showHighScores() {
 
-    startDiv.style.display = "none";
+    starting.style.display = "none";
     timer.style.display = "none";
     questionDiv.style.display = "none";
     timesUp.style.display = "none";
@@ -217,15 +216,13 @@ function showHighScores() {
     }
 }
 
-/**
- * ADD EVENT LISTENERS
- */
+//Event listeners
 
-startQuizBtn.addEventListener("click", newQuiz);
-choiceA.addEventListener("click", chooseA);
-choiceB.addEventListener("click", chooseB);
-choiceC.addEventListener("click", chooseC);
-choiceD.addEventListener("click", chooseD);
+startBtn.addEventListener("click", Quiz);
+choice_a.addEventListener("click", a);
+choice_b.addEventListener("click", b);
+choice_c.addEventListener("click", c);
+choice_d.addEventListener("click", d);
 
 submitInitialBtn.addEventListener("click", function(event){ 
     storeHighScores(event);
@@ -236,7 +233,7 @@ viewHighScore.addEventListener("click", function(event) {
 });
 
 goBackBtn.addEventListener("click", function() {
-    startDiv.style.display = "block";
+    starting.style.display = "block";
     highScoreSection.style.display = "none";
 });
 
