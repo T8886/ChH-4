@@ -1,6 +1,6 @@
 //Assignment completed with the assistance of multiple tutors and TA 
 //Questions were taken from https://www.sanfoundry.com/1000-javascript-questions-answers/
- const questions = [
+const questions = [
     {
         question: " Arrays in JavaScript are defined by which of the following statements?",
         choices: ["a. It is an ordered list of values", "b. It is an ordered list of objects", "c. It is an ordered list of string", "d. It is an ordered list of functions"],
@@ -11,7 +11,7 @@
         choices: ["a. Sequential", "b. Segmental", "c. Lexical", "d. Literal"],
         answer: "c. Lexical"
     },
-   
+
     {
         question: "Which of the following is not a framework?",
         choices: ["a. JavaScript .NET", "b.  JavaScript", "c. Cocoa JS", "d. jQuery"],
@@ -19,7 +19,7 @@
     },
 ];
 
-// grab references to elements
+// variables
 var clock = document.getElementById("clock");
 var remainingTime = document.getElementById("remainingTime");
 var timeIsUp = document.getElementById("timeIsUp");
@@ -41,28 +41,22 @@ var input = document.getElementById("input");
 var page = document.getElementById("page");
 
 var highSc = document.getElementById("highSc");
-var finalScore = document.getElementById("finalScore");
+var totalScore = document.getElementById("totalScore");
 
-var goBackBtn = document.getElementById("goBackBtn");
-var clearHighScoreBtn = document.getElementById("clearHighScoreBtn"); 
-var viewHighScore = document.getElementById("viewHighScore");
+var backBtn = document.getElementById("backBtn");
+var clearHSBtn = document.getElementById("clearHSBtn");
+var viewRecords = document.getElementById("viewRecords");
 var scoresRecord = document.getElementById("scoresRecord");
 
-// define other variables
-var correctAns = 0;
-var questionNum = 0;
-var scoreResult;
-var questionIndex = 0;
+var correctAnswers = 0;
+var indexQ = 0;
 
-// functions
-
-
-// WHEN I click the start button, clock starts
-var totalTime = 30;
+// clock starts when Start button clicked
+var time = 30;
 function Quiz() {
-    questionIndex = 0;
-    totalTime = 30;
-    remainingTime.textContent = totalTime;
+    indexQ = 0;
+    time = 30;
+    remainingTime.textContent = time;
     input.textContent = "";
 
     starting.style.display = "none";
@@ -70,68 +64,63 @@ function Quiz() {
     clock.style.display = "block";
     timeIsUp.style.display = "none";
 
-    var startClock = setInterval(function() {
-        totalTime--;
-        remainingTime.textContent = totalTime;
-        if(totalTime <= 0) {
+    var startClock = setInterval(function () {
+        time--;
+        remainingTime.textContent = time;
+        if (time <= 0) {
             clearInterval(startClock);
-            if (questionIndex < questions.length - 1) {
+            if (indexQ < questions.length - 1) {
                 quizCompleted();
             }
         }
-    },1000);
+    }, 1000);
 
-    showQuiz();
+    startOver();
 };
 
-// questions and choices displayed
-function showQuiz() {
-    nextQuestion();
+// questions and multiple answers choices displayed
+function startOver() {
+    questionsArray();
 }
 
-function nextQuestion() {
-    questionHead.textContent = questions[questionIndex].question;
-    choice_a.textContent = questions[questionIndex].choices[0];
-    choice_b.textContent = questions[questionIndex].choices[1];
-    choice_c.textContent = questions[questionIndex].choices[2];
-    choice_d.textContent = questions[questionIndex].choices[3];
+function questionsArray() {
+    questionHead.textContent = questions[indexQ].question;
+    choice_a.textContent = questions[indexQ].choices[0];
+    choice_b.textContent = questions[indexQ].choices[1];
+    choice_c.textContent = questions[indexQ].choices[2];
+    choice_d.textContent = questions[indexQ].choices[3];
 }
 
-// validate the answer
-function checkAnswer(answer) {
+// validating the answer
+function answerValidation(answer) {
 
     var lineBreak = document.getElementById("lineBreak");
     lineBreak.style.display = "block";
     showAns.style.display = "block";
 
-    if (questions[questionIndex].answer === questions[questionIndex].choices[answer]) {
-        // correct answer, add 1 score to final score
-        correctAns++;
-        // console.log(correctAns);
+    if (questions[indexQ].answer === questions[indexQ].choices[answer]) {
+        // if correct answer picked 1 score will be added to the total score
+        correctAnswers++;
         showAns.textContent = "Correct!";
     } else {
-        // wrong answer
-        showAns.textContent = "Wrong! The correct answer is: " + questions[questionIndex].answer;
+        // if wrong answer chosen
+        showAns.textContent = "Wrong! The correct answer is: " + questions[indexQ].answer;
     }
 
-    questionIndex++;
-    // repeat with the rest of questions 
-    if (questionIndex < questions.length) {
-        nextQuestion();
+    indexQ++;
+    // continue with the remaining questions 
+    if (indexQ < questions.length) {
+        questionsArray();
     } else {
-        // if no more question, run game over function
-        
+        // on a last question
         quizCompleted();
     }
 }
 
-function a() { checkAnswer(0); }
-
-function b() { checkAnswer(1); }
-
-function c() { checkAnswer(2); }
-
-function d() { checkAnswer(3); }
+function a() { answerValidation(0); }
+function b() { answerValidation(1); }
+function c() { answerValidation(2); }
+function d() { answerValidation(3); }
 
 // all questions are answered or clock reaches 0
 function quizCompleted() {
@@ -140,56 +129,52 @@ function quizCompleted() {
     starting.style.display = "none";
     clock.style.display = "none";
     timeIsUp.style.display = "block";
-
-    // show final score
-    finalScore.textContent = correctAns;
+    totalScore.textContent = correctAnswers;
 }
 
-// enter initial and store highscore in local storage
-function storeHighScores(event) {
+// initials and total scores stored in local storage
+function storeRecords(event) {
     event.preventDefault();
 
-    // stop function is initial is blank
+    // alert pop up if initials are not enetered
     if (input.value === "") {
         alert("Please enter your initials!");
         return;
-    } 
+    }
 
     starting.style.display = "none";
     clock.style.display = "none";
     timeIsUp.style.display = "none";
     overview.style.display = "none";
-    highSc.style.display = "block";   
+    highSc.style.display = "block";
 
-    // store scores into local storage
-    var savedHighScores = localStorage.getItem("high scores");
-    var scoresArray;
+    // storing scores
+    var savedRecords = localStorage.getItem("total scores");
+    var recordsArray;
 
-    if (savedHighScores === null) {
-        scoresArray = [];
+    if (savedRecords === null) {
+        recordsArray = [];
     } else {
-        scoresArray = JSON.parse(savedHighScores)
+        recordsArray = JSON.parse(savedRecords)
     }
 
-    var userScore = {
+    var playerScore = {
         initials: input.value,
-        score: finalScore.textContent
+        score: totalScore.textContent
     };
 
-    console.log(userScore);
-    scoresArray.push(userScore);
+    console.log(playerScore);
+    recordsArray.push(playerScore);
 
-    // stringify array in order to store in local
-    var scoresArrayString = JSON.stringify(scoresArray);
-    window.localStorage.setItem("high scores", scoresArrayString);
-    
-    // show current highscores
-    showHighScores();
+    // to store in local storage array has to be stringify 
+    var recordsArrayString = JSON.stringify(recordsArray);
+    window.localStorage.setItem("total scores", recordsArrayString);
+
+    // displaying total score
+    scoreOverview();
 }
-
-// function to show high scores
 var i = 0;
-function showHighScores() {
+function scoreOverview() {
 
     starting.style.display = "none";
     clock.style.display = "none";
@@ -198,20 +183,20 @@ function showHighScores() {
     overview.style.display = "none";
     highSc.style.display = "block";
 
-    var savedHighScores = localStorage.getItem("high scores");
+    var savedRecords = localStorage.getItem("total scores");
 
-    // check if there is any in local storage
-    if (savedHighScores === null) {
+    // checking for previously stored records in local storage 
+    if (savedRecords === null) {
         return;
     }
-    console.log(savedHighScores);
+    console.log(savedRecords);
 
-    var storedHighScores = JSON.parse(savedHighScores);
+    var records = JSON.parse(savedRecords);
 
-    for (; i < storedHighScores.length; i++) {
-        var eachNewHighScore = document.createElement("p");
-        eachNewHighScore.innerHTML = storedHighScores[i].initials + ": " + storedHighScores[i].score;
-        scoresRecord.appendChild(eachNewHighScore);
+    for (; i < records.length; i++) {
+        var everyRecord = document.createElement("p");
+        everyRecord.innerHTML = records[i].initials + ": " + records[i].score;
+        scoresRecord.appendChild(everyRecord);
     }
 }
 
@@ -223,21 +208,20 @@ choice_b.addEventListener("click", b);
 choice_c.addEventListener("click", c);
 choice_d.addEventListener("click", d);
 
-InitialsBtn.addEventListener("click", function(event){ 
-    storeHighScores(event);
+InitialsBtn.addEventListener("click", function (event) {
+    storeRecords(event);
 });
 
-viewHighScore.addEventListener("click", function(event) { 
-    showHighScores(event);
+viewRecords.addEventListener("click", function (event) {
+    scoreOverview(event);
 });
 
-goBackBtn.addEventListener("click", function() {
+backBtn.addEventListener("click", function () {
     starting.style.display = "block";
     highSc.style.display = "none";
 });
 
-clearHighScoreBtn.addEventListener("click", function(){
-    window.localStorage.removeItem("high scores");
-    scoresRecord.innerHTML = "High Scores Cleared!";
-    scoresRecord.setAttribute("style", "font-family: 'Archivo', sans-serif; font-style: italic;")
+clearHSBtn.addEventListener("click", function () {
+    window.localStorage.removeItem("total scores");
+    scoresRecord.innerHTML = "Total Scores Cleared!";
 });
