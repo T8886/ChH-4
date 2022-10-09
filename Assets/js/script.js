@@ -52,7 +52,7 @@ var correctAnswers = 0;
 var indexQ = 0;
 
 // clock starts when Start button clicked
-var time = 30;
+var time = 31;
 function Quiz() {
     indexQ = 0;
     time = 30;
@@ -103,7 +103,9 @@ function answerValidation(answer) {
         correctAnswers++;
         showAns.textContent = "Correct!";
     } else {
-        // if wrong answer chosen
+        // if wrong answer chosen - subtract 8 sec.
+        time -= 8;
+        remainingTime.textContent = time;
         showAns.textContent = "Wrong! The correct answer is: " + questions[indexQ].answer;
     }
 
