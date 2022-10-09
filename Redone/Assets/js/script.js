@@ -1,5 +1,5 @@
-
- //Questions were taken from https://www.sanfoundry.com/1000-javascript-questions-answers/
+//Assignment completed with the assistance of multiple tutors and TA 
+//Questions were taken from https://www.sanfoundry.com/1000-javascript-questions-answers/
  const questions = [
     {
         question: " Arrays in JavaScript are defined by which of the following statements?",
@@ -77,7 +77,7 @@ function newQuiz() {
         if(totalTime <= 0) {
             clearInterval(startTimer);
             if (questionIndex < questions.length - 1) {
-                gameOver();
+                gameCompleted();
             }
         }
     },1000);
@@ -85,10 +85,7 @@ function newQuiz() {
     showQuiz();
 };
 
-// console.log(questions[questionIndex].question);
-// console.log(questions[questionIndex].choices);
-
-// then presented with questions and choices
+// questions and choices displayed
 function showQuiz() {
     nextQuestion();
 }
@@ -101,7 +98,7 @@ function nextQuestion() {
     choiceD.textContent = questions[questionIndex].choices[3];
 }
 
-// after question is answered, show if correct or wrong
+// validate the answer
 function checkAnswer(answer) {
 
     var lineBreak = document.getElementById("lineBreak");
@@ -126,7 +123,7 @@ function checkAnswer(answer) {
         nextQuestion();
     } else {
         // if no more question, run game over function
-        gameOver();
+        gameCompleted();
     }
 }
 
@@ -138,8 +135,8 @@ function chooseC() { checkAnswer(2); }
 
 function chooseD() { checkAnswer(3); }
 
-// when all questions are answered or timer reaches 0, game over
-function gameOver() {
+// all questions are answered or timer reaches 0
+function gameCompleted() {
     summary.style.display = "block";
     questionDiv.style.display = "none";
     startDiv.style.display = "none";
